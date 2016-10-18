@@ -17,18 +17,18 @@ import java.util.List;
  */
 @Component
 public class Proxy {
-    @Autowired
-    private static AtmosferaBuilder atmosferaBuilder;
-    @Autowired
-    private static DiaActualBuilder diaActualBuilder;
-    @Autowired
-    private static LocalidadBuilder localidadBuilder;
-    @Autowired
-    private static PronosticoBuilder pronosticoBuilder;
-    @Autowired
-    private static PronosticoExtendidoBuilder pronosticoExtendidoBuilder;
-    @Autowired
-    private  static VientoBuilder vientoBuilder;
+
+    private static AtmosferaBuilder atmosferaBuilder = new AtmosferaBuilder();
+
+    private static DiaActualBuilder diaActualBuilder = new DiaActualBuilder();
+
+    private static LocalidadBuilder localidadBuilder = new LocalidadBuilder();
+
+    private static PronosticoBuilder pronosticoBuilder = new PronosticoBuilder();
+
+    private static PronosticoExtendidoBuilder pronosticoExtendidoBuilder = new PronosticoExtendidoBuilder();
+
+    private  static VientoBuilder vientoBuilder = new VientoBuilder();
 
 
 
@@ -44,7 +44,7 @@ public class Proxy {
         try {
             json = JsonReader.readJsonFromUrl(ciudad,region);
         } catch (IOException e) {
-            e.printStackTrace();
+            return  e.getMessage();
         }
         if(json!=null) {
 
@@ -91,13 +91,7 @@ public class Proxy {
                     .withLocalidad(l)
                     .withPronosticoExtendido(list).createPronostico();
 
-            
-
-
-
-
-
-
+            return p.toString();
         }
         return "nope";
     }
