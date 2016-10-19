@@ -1,7 +1,8 @@
 package datos;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+
+import org.springframework.stereotype.Component;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,13 +11,13 @@ import java.sql.SQLException;
 /**
  * Created by juanb on 10/11/2016.
  */
-@Repository
+@Component
 public class DBConnection {
 
     private Connection connection = null;
     private String conString="jdbc:sqlserver://DESKTOP-OBB6MVN;databaseName=Bootcamp;integratedSecurity=true;";
 
-    private static DBConnection instance= new DBConnection();
+
 
     private DBConnection(){
         try {
@@ -29,17 +30,7 @@ public class DBConnection {
         }
     }
 
-    public static DBConnection getInstance() throws SQLException {
-        if(instance==null){
-            instance = new DBConnection();
-        }else{
-            if(instance.getConnection().isClosed()){
-                instance = new DBConnection();
-            }
-        }
 
-        return instance;
-    }
 
     public Connection getConnection(){return connection;}
 
