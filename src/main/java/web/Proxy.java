@@ -1,5 +1,6 @@
 package web;
 
+import datos.GestorPronostico;
 import negocio.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,34 +13,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 /**
  * Created by juanb on 10/18/2016.
  */
 @Component
 public class Proxy {
 
-    private static AtmosferaBuilder atmosferaBuilder = new AtmosferaBuilder();
 
-    private static DiaActualBuilder diaActualBuilder = new DiaActualBuilder();
+@Autowired
+    private AtmosferaBuilder atmosferaBuilder ;
+@Autowired
+    private DiaActualBuilder diaActualBuilder ;
+@Autowired
+    private LocalidadBuilder localidadBuilder ;
+@Autowired
+    private  PronosticoBuilder pronosticoBuilder ;
+@Autowired
+    private  PronosticoExtendidoBuilder pronosticoExtendidoBuilder ;
+@Autowired
+    private   VientoBuilder vientoBuilder ;
+@Autowired
+    private   GestorPronostico gestorPronostico;
 
-    private static LocalidadBuilder localidadBuilder = new LocalidadBuilder();
-
-    private static PronosticoBuilder pronosticoBuilder = new PronosticoBuilder();
-
-    private static PronosticoExtendidoBuilder pronosticoExtendidoBuilder = new PronosticoExtendidoBuilder();
-
-    private  static VientoBuilder vientoBuilder = new VientoBuilder();
 
 
 
 
 
     public static float aCelcius(float f){
-        return 5/9*(f-32);
+        return ((f-32)*(5f/9f));
     }
+    public static float aKMH(float vel){return 1.609f*vel;}
 
 
-    public static String pedir(String ciudad, String region){
+    public String pedir(String ciudad, String region){
         JSONObject json = null;
         try {
             json = JsonReader.readJsonFromUrl(ciudad,region);
@@ -61,7 +70,7 @@ public class Proxy {
                     .withPais(channel.getJSONObject("location").getString("country"))
                     .withRegion(channel.getJSONObject("location").getString("region")).createLocalidad();
 
-            Viento v = vientoBuilder.withVelocidad((float)channel.getJSONObject("wind").getDouble("speed"))
+            Viento v = vientoBuilder.withVelocidad(aKMH((float)channel.getJSONObject("wind").getDouble("speed")))
                     .withDireccion((float)channel.getJSONObject("wind").getDouble("direction")).createViento();
 
 
@@ -69,7 +78,7 @@ public class Proxy {
             JSONArray jArray=channel.getJSONObject("item").getJSONArray("forecast");
             List<PronosticoExtendido> list=new ArrayList<>();
 
-            DiaActual da = diaActualBuilder.withTemp((float)channel.getJSONObject("item").getJSONObject("condition").getDouble("temp"))
+            DiaActual da = diaActualBuilder.withTemp(aCelcius((float)channel.getJSONObject("item").getJSONObject("condition").getDouble("temp")))
                     .withDescripcion(channel.getJSONObject("item").getJSONObject("condition").getString("text"))
                     .withFecha(jArray.getJSONObject(0).getString("date")).createDiaActual();
 
@@ -80,8 +89,8 @@ public class Proxy {
                 PronosticoExtendido p = pronosticoExtendidoBuilder.withDescripcion(jo.getString("text"))
                         .withDia(jo.getString("day"))
                         .withFecha(jo.getString("date"))
-                        .withTempMax((float)jo.getDouble("high"))
-                        .withTempMin((float)jo.getDouble("low")).createPronosticoExtendido();
+                        .withTempMax(aCelcius((float)jo.getDouble("high")))
+                        .withTempMin(aCelcius((float)jo.getDouble("low"))).createPronosticoExtendido();
                 list.add(p);
             }
 
@@ -91,16 +100,20 @@ public class Proxy {
                     .withLocalidad(l)
                     .withPronosticoExtendido(list).createPronostico();
 
+
             return p.toString();
         }
         return "nope";
     }
 
-    public static boolean guardar(Pronostico p){
-        boolean ban = false;
+    public  void guardar(Pronostico p){
 
 
-        return ban;
+            gestorPronostico.guardar(p);
+
+
+
+
 
     }
 
