@@ -12,11 +12,11 @@ import java.sql.SQLException;
  */
 @Repository
 public class DBConnection {
-    @Autowired
-    private Connection connection;
+
+    private Connection connection = null;
     private String conString="jdbc:sqlserver://DESKTOP-OBB6MVN;databaseName=Bootcamp;integratedSecurity=true;";
-    @Autowired
-    private static DBConnection instance;
+
+    private static DBConnection instance= new DBConnection();
 
     private DBConnection(){
         try {
@@ -32,8 +32,10 @@ public class DBConnection {
     public static DBConnection getInstance() throws SQLException {
         if(instance==null){
             instance = new DBConnection();
-        }else if(instance.getConnection().isClosed()){
-            instance= new DBConnection();
+        }else{
+            if(instance.getConnection().isClosed()){
+                instance = new DBConnection();
+            }
         }
 
         return instance;
