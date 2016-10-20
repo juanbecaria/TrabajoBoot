@@ -1,7 +1,6 @@
 package datos;
 
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -11,33 +10,39 @@ import java.sql.SQLException;
 /**
  * Created by juanb on 10/11/2016.
  */
-@Component
+
 public class DBConnection {
 
     private  Connection connection;
     private  String conString="jdbc:sqlserver://DESKTOP-OBB6MVN;databaseName=Bootcamp;integratedSecurity=true;";
+    private static DBConnection dbConnection;
 
-
-
-
-
-
-    public Connection getConnection() {
+    private DBConnection(){
         try {
-            if (connection == null ) {
-                connection = create();
-            }
-            else{if(connection.isClosed()){
-                connection = create();
-            }
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection(conString);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static DBConnection getInstance(){
+        try {
+            if (dbConnection == null || dbConnection.getConnection().isClosed()) {
+                dbConnection = new DBConnection();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return connection;
+        return dbConnection;
+
     }
 
-    public static Connection create(){
+    public Connection getConnection() {return connection;  }
+
+   /* public static Connection create(){
         Connection con = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -49,19 +54,10 @@ public class DBConnection {
         }
         return con;
 
-    }
+    }*/
 
 
-    public DBConnection(){
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(conString);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
 

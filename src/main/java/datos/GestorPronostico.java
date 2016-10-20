@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public class GestorPronostico {
 
-    private DBConnection dbConnection;
+
     @Autowired
     private GestorAtmosfera gestorAtmosfera;
     @Autowired
@@ -40,7 +40,7 @@ public class GestorPronostico {
         try {
 
 
-            Connection con = dbConnection.getConnection();
+            Connection con = DBConnection.getInstance().getConnection();
             con.setAutoCommit(false);
             String fecha= pro.getDiaActual().getFecha();
 
@@ -95,7 +95,7 @@ public class GestorPronostico {
 
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = DBConnection.getInstance().getConnection();
             String search= "SELECT fecha FROM Pronostico WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
             PreparedStatement st = con.prepareStatement(search);

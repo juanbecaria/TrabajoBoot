@@ -17,13 +17,12 @@ import java.sql.SQLException;
  */
 @Repository
 public class GestorAtmosfera {
-    @Autowired
-    private DBConnection dbConnection;
+
 
     public void guardar(Localidad loca, String fecha, Atmosfera at){
         try {
 
-            Connection con = dbConnection.getConnection();
+            Connection con = DBConnection.getInstance().getConnection();
 
 
             String insert= "INSERT INTO Atmosfera (fecha, ciudad, pais, region, presion, visivilidad, ambienteAscendente, humedad) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
@@ -61,7 +60,7 @@ public class GestorAtmosfera {
 
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = DBConnection.getInstance().getConnection();
             String search= "SELECT presion, visibilidad, humedad, ambienteAscendente FROM Atmosfera WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
             PreparedStatement st = con.prepareStatement(search);

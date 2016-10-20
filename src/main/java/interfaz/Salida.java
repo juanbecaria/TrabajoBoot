@@ -21,10 +21,10 @@ public class Salida {
     private Proxy proxy ;
 
     @GET
-    @Path("/echo/{input}")
+    @Path("/st/{ciudad}/{region}")
     @Produces("text/plain")
-    public String ping(@PathParam("input") String input) {
-        return input;
+    public String mostrar(@PathParam("ciudad") String ciudad, @PathParam("region") String region) {
+        return proxy.mostrar(ciudad, region);
     }
 
     @POST

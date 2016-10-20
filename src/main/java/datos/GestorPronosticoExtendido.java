@@ -19,8 +19,7 @@ import java.util.List;
  */
 @Repository
 public class GestorPronosticoExtendido {
-    @Autowired
-    private DBConnection dbConnection;
+
 
 
 
@@ -30,7 +29,7 @@ public class GestorPronosticoExtendido {
 
         try {
 
-            Connection con = dbConnection.getConnection();
+            Connection con = DBConnection.getInstance().getConnection();
 
             for(int i = 0; i < pe.size();i++) {
 
@@ -74,7 +73,7 @@ public class GestorPronosticoExtendido {
         Connection con = null;
 
         try {
-            con = dbConnection.getConnection();
+            con = DBConnection.getInstance().getConnection();
             String search= "SELECT minima, maxima, descripcion, fechaPronostico, nombre FROM PronosticoExtendido WHERE ciudad=? AND region=? AND pais=? AND fechaDia=?";
 
             PreparedStatement st = con.prepareStatement(search);

@@ -18,8 +18,7 @@ import java.sql.SQLException;
 public  class GestorLocalidad {
 
 
-    @Autowired
-    private DBConnection dbConnection;
+
 
     public void guardar(Localidad loca){
 
@@ -28,7 +27,7 @@ public  class GestorLocalidad {
 
         try {
 
-            Connection con = dbConnection.getConnection();
+            Connection con = DBConnection.getInstance().getConnection();
 
             PreparedStatement st = con.prepareStatement(insert);
             st.setString(1,loca.getCiudad());
@@ -55,7 +54,7 @@ public  class GestorLocalidad {
 
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = DBConnection.getInstance().getConnection();
             String search= "SELECT ciudad, pais, region FROM Localidad WHERE ciudad=? AND region=? AND pais=?";
 
             PreparedStatement st = con.prepareStatement(search);
