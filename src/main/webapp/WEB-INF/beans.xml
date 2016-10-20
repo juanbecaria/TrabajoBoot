@@ -9,13 +9,14 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
-    <context:component-scan base-package="com.TrabajoBoot.interfaz,
-                                            com.TrabajoBoot.datos,
-                                            com.TrabajoBoot.soporte,
-                                            com.TrabajoBoot.negocio,
-                                            com.TrabajoBoot.miInterfaz" />
+    <context:component-scan base-package="interfaz" />
+    <context:component-scan base-package="datos"/>
+    <context:component-scan base-package="soporte"/>
+    <context:component-scan base-package="web"/>
+
     <context:property-placeholder/>
     <context:annotation-config/>
+
     <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
     <jaxrs:server id="services" address="/">

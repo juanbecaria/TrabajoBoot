@@ -99,7 +99,7 @@ public class Proxy {
                     .withViento(v)
                     .withLocalidad(l)
                     .withPronosticoExtendido(list).createPronostico();
-            /*guardar(p);*/
+            guardar(p);
 
             return p.toString();
         }

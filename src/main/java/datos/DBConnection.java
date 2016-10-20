@@ -24,8 +24,12 @@ public class DBConnection {
 
     public Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
+            if (connection == null ) {
                 connection = create();
+            }
+            else{if(connection.isClosed()){
+                connection = create();
+            }
             }
         } catch (SQLException e) {
             e.printStackTrace();
