@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by juanb on 9/26/2016.
  */
-@Component
+
 public class Atmosfera implements Comparable<Atmosfera> {
 
 
@@ -41,7 +41,7 @@ public class Atmosfera implements Comparable<Atmosfera> {
     public String toString() {
         return "Atmosfera{" +
                 "presion=" + presion + "in" +
-                ", visibilidad=" + visibilidad + "miles" +
+                ", visibilidad=" + visibilidad + " miles" +
                 ", humedad=" + humedad + "%" +
                 ", ambienteAscendente=" + ambienteAscendente +
                 '}';

@@ -2,6 +2,7 @@ package datos;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.Localidad;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.LocalidadBuilder;
 
@@ -16,6 +17,10 @@ import java.sql.SQLException;
 @Repository
 public  class GestorLocalidad {
 
+
+    @Autowired
+    private DBConnection dbConnection;
+
     public void guardar(Localidad loca){
 
 
@@ -23,7 +28,7 @@ public  class GestorLocalidad {
 
         try {
 
-            Connection con = DBConnection.getInstance().getConnection();
+            Connection con = dbConnection.getConnection();
 
             PreparedStatement st = con.prepareStatement(insert);
             st.setString(1,loca.getCiudad());
@@ -50,7 +55,7 @@ public  class GestorLocalidad {
 
         Connection con = null;
         try {
-            con = DBConnection.getInstance().getConnection();
+            con = dbConnection.getConnection();
             String search= "SELECT ciudad, pais, region FROM Localidad WHERE ciudad=? AND region=? AND pais=?";
 
             PreparedStatement st = con.prepareStatement(search);

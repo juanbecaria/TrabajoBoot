@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by juanb on 9/26/2016.
  */
-@Component
+
 public class Viento implements Comparable<Viento>{
     private float direccion;
     private float velocidad;
@@ -27,7 +27,7 @@ public class Viento implements Comparable<Viento>{
     public String toString() {
         return "Viento{" +
                 "direccion=" + direccion + "grados" +
-                ", velocidad=" + velocidad + "mi/h" +
+                ", velocidad=" + velocidad + "km/h" +
                 '}';
     }
 

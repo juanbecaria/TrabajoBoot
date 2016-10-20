@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by juanb on 9/26/2016.
  */
-@Component
+
 public class Localidad implements Comparable<Localidad>{
 
     private String ciudad;

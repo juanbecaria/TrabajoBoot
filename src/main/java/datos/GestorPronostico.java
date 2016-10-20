@@ -2,6 +2,7 @@ package datos;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.PronosticoBuilder;
 
@@ -17,6 +18,18 @@ import java.util.List;
 @Repository
 public class GestorPronostico {
 
+    private DBConnection dbConnection;
+    @Autowired
+    private GestorAtmosfera gestorAtmosfera;
+    @Autowired
+    private GestorPronosticoExtendido gestorPronosticoExtendido;
+    @Autowired
+    private GestorDiaActual gestorDiaActual;
+    @Autowired
+    private GestorViento gestorViento;
+    @Autowired
+    private GestorLocalidad gestorLocalidad;
+
 
 
     public void guardar(Pronostico pro){
@@ -26,12 +39,13 @@ public class GestorPronostico {
 
         try {
 
-            Connection con = DBConnection.getInstance().getConnection();
+
+            Connection con = dbConnection.getConnection();
             con.setAutoCommit(false);
             String fecha= pro.getDiaActual().getFecha();
 
-            GestorLocalidad gl = new GestorLocalidad();
-            gl.guardar(pro.getLocalidad());
+
+            gestorLocalidad.guardar(pro.getLocalidad());
 
             PreparedStatement pst = con.prepareStatement(declaracion);
             pst.setString(1,fecha);
@@ -43,19 +57,19 @@ public class GestorPronostico {
 
 
 
-            GestorAtmosfera ga = new GestorAtmosfera();
-            ga.guardar( pro.getLocalidad(),fecha, pro.getAtmosfera());
 
-            GestorDiaActual gda= new GestorDiaActual();
-            gda.guardar( pro.getLocalidad(),pro.getDiaActual());
+            gestorAtmosfera.guardar( pro.getLocalidad(),fecha, pro.getAtmosfera());
 
 
+            gestorDiaActual.guardar( pro.getLocalidad(),pro.getDiaActual());
 
-            GestorPronosticoExtendido gpe = new GestorPronosticoExtendido();
-            gpe.guardar(pro.getLocalidad(),fecha,pro.getPronosticoExtendido());
 
-            GestorViento gv = new GestorViento();
-            gv.guardar(pro.getLocalidad(),fecha,pro.getViento());
+
+
+            gestorPronosticoExtendido.guardar(pro.getLocalidad(),fecha,pro.getPronosticoExtendido());
+
+
+            gestorViento.guardar(pro.getLocalidad(),fecha,pro.getViento());
 
 
             con.commit();
@@ -81,7 +95,7 @@ public class GestorPronostico {
 
         Connection con = null;
         try {
-            con = DBConnection.getInstance().getConnection();
+            con = dbConnection.getConnection();
             String search= "SELECT fecha FROM Pronostico WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
             PreparedStatement st = con.prepareStatement(search);

@@ -3,6 +3,7 @@ package datos;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.Localidad;
 import negocio.Viento;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.VientoBuilder;
 
@@ -17,13 +18,16 @@ import java.sql.SQLException;
 @Repository
 public class GestorViento {
 
+   @Autowired
+   private DBConnection dbConnection;
+
    public void guardar(Localidad loca, String fecha, Viento vien){
 
       String insert= "INSERT INTO Viento (fecha, ciudad, pais, region, velocidad, direccion) VALUES (?, ?, ?, ?, ?, ?) ";
 
       try {
 
-         Connection con = DBConnection.getInstance().getConnection();
+         Connection con = dbConnection.getConnection();
 
 
          PreparedStatement st = con.prepareStatement(insert);
@@ -54,7 +58,7 @@ public class GestorViento {
 
       Connection con = null;
       try {
-         con = DBConnection.getInstance().getConnection();
+         con = dbConnection.getConnection();
          String search= "SELECT direccion, velocidad FROM Viento WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
          PreparedStatement st = con.prepareStatement(search);

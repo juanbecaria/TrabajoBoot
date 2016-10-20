@@ -3,6 +3,7 @@ package datos;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.Localidad;
 import negocio.PronosticoExtendido;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.PronosticoExtendidoBuilder;
 
@@ -18,6 +19,8 @@ import java.util.List;
  */
 @Repository
 public class GestorPronosticoExtendido {
+    @Autowired
+    private DBConnection dbConnection;
 
 
 
@@ -27,21 +30,17 @@ public class GestorPronosticoExtendido {
 
         try {
 
-            Connection con = DBConnection.getInstance().getConnection();
+            Connection con = dbConnection.getConnection();
 
             for(int i = 0; i < pe.size();i++) {
 
-
-                 String fechaProno = pe.get(i).getFecha();
-
-
                  PreparedStatement st = con.prepareStatement(insert);
 
-                st.setString(1,fecha);
+                 st.setString(1,fecha);
                  st.setString(2, loca.getCiudad());
                  st.setString(3, loca.getPais());
                  st.setString(4, loca.getRegion());
-                 st.setString(5, fechaProno);
+                 st.setString(5, pe.get(i).getFecha());
                  st.setFloat(6, pe.get(i).getTempMin());
                  st.setFloat(7, pe.get(i).getTempMax());
                  st.setString(8, pe.get(i).getDescripcion());
@@ -75,7 +74,7 @@ public class GestorPronosticoExtendido {
         Connection con = null;
 
         try {
-            con = DBConnection.getInstance().getConnection();
+            con = dbConnection.getConnection();
             String search= "SELECT minima, maxima, descripcion, fechaPronostico, nombre FROM PronosticoExtendido WHERE ciudad=? AND region=? AND pais=? AND fechaDia=?";
 
             PreparedStatement st = con.prepareStatement(search);

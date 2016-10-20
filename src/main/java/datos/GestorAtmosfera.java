@@ -3,6 +3,7 @@ package datos;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.Atmosfera;
 import negocio.Localidad;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.AtmosferaBuilder;
 
@@ -16,11 +17,13 @@ import java.sql.SQLException;
  */
 @Repository
 public class GestorAtmosfera {
+    @Autowired
+    private DBConnection dbConnection;
 
     public void guardar(Localidad loca, String fecha, Atmosfera at){
         try {
 
-            Connection con = DBConnection.getInstance().getConnection();
+            Connection con = dbConnection.getConnection();
 
 
             String insert= "INSERT INTO Atmosfera (fecha, ciudad, pais, region, presion, visivilidad, ambienteAscendente, humedad) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
@@ -58,7 +61,7 @@ public class GestorAtmosfera {
 
         Connection con = null;
         try {
-            con = DBConnection.getInstance().getConnection();
+            con = dbConnection.getConnection();
             String search= "SELECT presion, visibilidad, humedad, ambienteAscendente FROM Atmosfera WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
             PreparedStatement st = con.prepareStatement(search);

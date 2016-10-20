@@ -3,6 +3,7 @@ package datos;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import negocio.DiaActual;
 import negocio.Localidad;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import soporte.DiaActualBuilder;
 
@@ -16,6 +17,8 @@ import java.sql.SQLException;
  */
 @Repository
 public class GestorDiaActual {
+    @Autowired
+    private DBConnection dbConnection;
 
 
     public void guardar(Localidad loca, DiaActual dia){
@@ -25,7 +28,7 @@ public class GestorDiaActual {
 
         try {
 
-            Connection con = DBConnection.getInstance().getConnection();
+            Connection con = dbConnection.getConnection();
 
             PreparedStatement st = con.prepareStatement(insert);
             st.setString(1, dia.getFecha());
@@ -54,7 +57,7 @@ public class GestorDiaActual {
 
         Connection con = null;
         try {
-            con = DBConnection.getInstance().getConnection();
+            con = dbConnection.getConnection();
             String search= "SELECT fecha, descripcion, temperatura FROM DiaActual WHERE ciudad=? AND region=? AND pais=? AND fecha=?";
 
             PreparedStatement st = con.prepareStatement(search);

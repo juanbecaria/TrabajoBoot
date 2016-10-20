@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by juanb on 9/26/2016.
  */
-@Component
+
 public class Pronostico implements Comparable<Pronostico> {
     @Autowired
     private Viento viento;
@@ -51,13 +51,17 @@ public class Pronostico implements Comparable<Pronostico> {
 
     @Override
     public String toString() {
-        return "Pronostico{" +
-                "viento=" + viento +
-                ", atmosfera=" + atmosfera +
-                ", diaActual=" + diaActual +
-                ", pronosticoExtendido=" + pronosticoExtendido +
-                ", localidad=" + localidad +
-                '}';
+
+        StringBuffer sb = new StringBuffer("Pronostico{ ");
+        sb.append(" Localidad=" + localidad);
+        sb.append(", DiaActual= " + diaActual );
+        sb.append(", Viento=" + viento );
+        sb.append(", Atmosfera= " + atmosfera );
+        sb.append(", Pronostico Extendido= " + pronosticoExtendido );
+        sb.append('}');
+
+        return sb.toString();
+
     }
 
     public int compareTo(Pronostico o) {

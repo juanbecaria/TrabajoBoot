@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by juanb on 9/26/2016.
  */
-@Component
+
 public class DiaActual implements Comparable<DiaActual> {
     private String fecha;
     private float temp;
@@ -34,7 +34,7 @@ public class DiaActual implements Comparable<DiaActual> {
     public String toString() {
         return "DiaActual{" +
                 "Fecha= "+fecha +
-                "Temp= " + temp + "F" +
+                "Temp= " + temp + "C" +
                 ", Descripcion='" + descripcion + '\'' +
                 '}';
     }

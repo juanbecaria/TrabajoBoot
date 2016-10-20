@@ -2,7 +2,7 @@ package negocio;
 
 import org.springframework.stereotype.Component;
 
-@Component
+
 
 public class PronosticoExtendido implements Comparable<PronosticoExtendido> {
 
@@ -49,7 +49,7 @@ public class PronosticoExtendido implements Comparable<PronosticoExtendido> {
     }
 
     public int compareTo(PronosticoExtendido o) {
-        float res= 0;
+        double res= 0;
         res= fecha.compareTo(o.getFecha());
         if(res==0){
             res= tempMin-o.getTempMin();
